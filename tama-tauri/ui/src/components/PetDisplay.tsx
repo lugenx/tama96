@@ -463,6 +463,8 @@ export default function PetDisplay({
               setGameActive(false);
             } else if (!state.is_sleeping) {
               setGameActive(true);
+            } else {
+              showToast("Pet is sleeping");
             }
           } else if (i === 3) { // Medicine
             await giveMedicine();

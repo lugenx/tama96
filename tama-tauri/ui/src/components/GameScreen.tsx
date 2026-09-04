@@ -26,6 +26,7 @@ export default function GameScreen({ startGame, playRound, onClose, onReveal, on
       setPhase("pick");
     } catch (e) {
       setError(String(e));
+      setPhase("pick");
     }
   }, [onGameStart, startGame]);
 
