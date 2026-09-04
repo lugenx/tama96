@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import type { Choice, GameResult, PetState } from "../types";
+import type { Choice, GameSession, PetState, RoundOutcome } from "../types";
 
 export interface UsePetStateReturn {
   state: PetState | null;
@@ -8,7 +8,8 @@ export interface UsePetStateReturn {
   error: string | null;
   feedMeal: () => Promise<void>;
   feedSnack: () => Promise<void>;
-  playGame: (moves: Choice[]) => Promise<GameResult>;
+  startGame: () => Promise<GameSession>;
+  playRound: (session: GameSession, choice: Choice) => Promise<RoundOutcome>;
   discipline: () => Promise<void>;
   giveMedicine: () => Promise<void>;
   cleanPoop: () => Promise<void>;
@@ -75,10 +76,14 @@ export function usePetState(): UsePetStateReturn {
     }
   }, []);
 
-  const playGame = useCallback(async (moves: Choice[]): Promise<GameResult> => {
-    const result = await invoke<GameResult>("play_game", { moves });
-    await refresh();
-    return result;
+  const startGame = useCallback(async (): Promise<GameSession> => {
+    return await invoke<GameSession>("start_game");
+  }, []);
+
+  const playRound = useCallback(async (session: GameSession, choice: Choice): Promise<RoundOutcome> => {
+    const outcome = await invoke<RoundOutcome>("play_round", { session, choice });
+    if (outcome.finished) await refresh();
+    return outcome;
   }, [refresh]);
 
   const discipline = useCallback(async () => {
@@ -112,7 +117,8 @@ export function usePetState(): UsePetStateReturn {
     error,
     feedMeal,
     feedSnack,
-    playGame,
+    startGame,
+    playRound,
     discipline,
     giveMedicine,
     cleanPoop,

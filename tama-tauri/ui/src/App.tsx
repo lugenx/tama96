@@ -35,7 +35,7 @@ function loadShellColor(): string {
 function App() {
   const {
     state, loading, error,
-    feedMeal, feedSnack, playGame, discipline,
+    feedMeal, feedSnack, startGame, playRound, discipline,
     giveMedicine, cleanPoop, toggleLights, hatchNewEgg,
   } = usePetState();
   const [showSettings, setShowSettings] = useState(false);
@@ -76,20 +76,23 @@ function App() {
 
   return (
     <div style={{ ...shellStyle, background: shellColor }}>
-      {!state.is_alive ? (
-        <DeathScreen state={state} onHatchNewEgg={hatchNewEgg} />
-      ) : (
-        <PetDisplay
-          state={state}
-          feedMeal={feedMeal}
-          feedSnack={feedSnack}
-          playGame={playGame}
-          discipline={discipline}
-          giveMedicine={giveMedicine}
-          cleanPoop={cleanPoop}
-          toggleLights={toggleLights}
-        />
-      )}
+      <div style={deviceWrapStyle}>
+        {!state.is_alive ? (
+          <DeathScreen state={state} onHatchNewEgg={hatchNewEgg} />
+        ) : (
+          <PetDisplay
+            state={state}
+            feedMeal={feedMeal}
+            feedSnack={feedSnack}
+            discipline={discipline}
+            giveMedicine={giveMedicine}
+            cleanPoop={cleanPoop}
+            toggleLights={toggleLights}
+            startGame={startGame}
+            playRound={playRound}
+          />
+        )}
+      </div>
 
       <div style={bottomRow}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -148,6 +151,16 @@ const shellStyle: React.CSSProperties = {
   padding: "6px",
   boxSizing: "border-box",
   overflow: "hidden",
+};
+
+const deviceWrapStyle: React.CSSProperties = {
+  flex: 1,
+  minHeight: 0,
+  overflow: "hidden",
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 };
 
 const bottomRow: React.CSSProperties = {
