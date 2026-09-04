@@ -449,15 +449,21 @@ export default function PetDisplay({
       if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h) {
         try {
           if (i === 0) { // Feed
-            setFeedSubmenu(prev => !prev);
+            if (state.is_sleeping) {
+              showToast("Pet is sleeping");
+            } else {
+              setFeedSubmenu(prev => !prev);
+            }
           } else if (i === 1) { // Light
             await toggleLights();
           } else if (i === 2) { // Game
             if (gameActive) {
               pendingScoreRef.current = null;
               setGameScore(null);
+              setGameActive(false);
+            } else if (!state.is_sleeping) {
+              setGameActive(true);
             }
-            setGameActive(v => !v);
           } else if (i === 3) { // Medicine
             await giveMedicine();
             triggerActionAnim();

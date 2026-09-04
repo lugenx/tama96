@@ -57,23 +57,15 @@ export function usePetState(): UsePetStateReturn {
   }, [refresh]);
 
   const feedMeal = useCallback(async () => {
-    try {
-      const s = await invoke<PetState>("feed_meal");
-      console.log("feed_meal result:", s);
-      if (mountedRef.current) setState(s);
-    } catch (e) {
-      console.error("feed_meal error:", e);
-    }
+    const s = await invoke<PetState>("feed_meal");
+    console.log("feed_meal result:", s);
+    if (mountedRef.current) setState(s);
   }, []);
 
   const feedSnack = useCallback(async () => {
-    try {
-      const s = await invoke<PetState>("feed_snack");
-      console.log("feed_snack result:", s);
-      if (mountedRef.current) setState(s);
-    } catch (e) {
-      console.error("feed_snack error:", e);
-    }
+    const s = await invoke<PetState>("feed_snack");
+    console.log("feed_snack result:", s);
+    if (mountedRef.current) setState(s);
   }, []);
 
   const startGame = useCallback(async (): Promise<GameSession> => {
