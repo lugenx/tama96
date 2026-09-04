@@ -1017,6 +1017,7 @@ const infoMainRow: React.CSSProperties = {
   display: "flex", justifyContent: "center", gap: 10,
   fontSize: 12, fontFamily: "monospace", color: "#444",
   letterSpacing: 0.5, fontVariantNumeric: "tabular-nums",
+  whiteSpace: "nowrap",
 };
 
 const infoMetaRow: React.CSSProperties = {
